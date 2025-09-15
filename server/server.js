@@ -4,19 +4,23 @@ const cors = require('cors');
 const { Pool } = require('pg');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
-// Configure your PostgreSQL connection
+// Add this route for the main page
+app.get('/', (req, res) => {
+  res.send('Server is up and running!');
+});
+
+// Configure your PostgreSQL connection using environment variables
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'newspaper_tracker',
-    password: 'database123',
-    port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 // Test the database connection
@@ -30,8 +34,8 @@ app.get('/api/daily-entries/:year/:month', async (req, res) => {
     try {
         const result = await pool.query(
             `SELECT * FROM daily_entries
-             WHERE EXTRACT(YEAR FROM date) = $1 AND EXTRACT(MONTH FROM date) = $2
-             ORDER BY date ASC;`,
+              WHERE EXTRACT(YEAR FROM date) = $1 AND EXTRACT(MONTH FROM date) = $2
+              ORDER BY date ASC;`,
             [year, month]
         );
         res.status(200).json(result.rows);
@@ -45,18 +49,15 @@ app.get('/api/daily-entries/:year/:month', async (req, res) => {
 app.post('/api/daily-entry', async (req, res) => {
     const { date, aaj_ka_anand_price, times_of_india_price } = req.body;
     try {
-        // Calculate the total daily price, assuming a count of 1 for each
         const totalDailyPrice = (aaj_ka_anand_price * 1) + (times_of_india_price * 1);
-
-        // Save the daily entry to the database
         const result = await pool.query(
             `INSERT INTO daily_entries (date, aaj_ka_anand_price, times_of_india_price, total_daily_price)
-             VALUES ($1, $2, $3, $4)
-             ON CONFLICT (date) DO UPDATE SET
-             aaj_ka_anand_price = EXCLUDED.aaj_ka_anand_price,
-             times_of_india_price = EXCLUDED.times_of_india_price,
-             total_daily_price = EXCLUDED.total_daily_price
-             RETURNING *;`,
+              VALUES ($1, $2, $3, $4)
+              ON CONFLICT (date) DO UPDATE SET
+              aaj_ka_anand_price = EXCLUDED.aaj_ka_anand_price,
+              times_of_india_price = EXCLUDED.times_of_india_price,
+              total_daily_price = EXCLUDED.total_daily_price
+              RETURNING *;`,
             [date, aaj_ka_anand_price, times_of_india_price, totalDailyPrice]
         );
         res.status(200).json(result.rows[0]);

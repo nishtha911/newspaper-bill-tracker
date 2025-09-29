@@ -2,8 +2,13 @@
 
 # PaperTrail: A Newspaper Bill Tracker
 
-PaperTrail is a full-stack web application designed to help users track daily newspaper subscription expenses.
-Originally built for personal use to help manage household bills, it provides a clean and responsive interface for logging and monitoring expenses on a monthly basis.
+PaperTrail is a full-stack web application designed to help users track daily newspaper subscription expenses. Developed for personal use to help my mother manage her household bills, it provides a clean interface for logging and monitoring expenses monthly :)
+
+<img width="1895" height="865" alt="image" src="https://github.com/user-attachments/assets/4e9ac6e3-571f-4b79-ba4a-adb9fa112b47" />
+<img width="1901" height="862" alt="image" src="https://github.com/user-attachments/assets/cd435f91-1402-4162-860a-9cf455dd2cd2" />
+
+
+
 
 ---
 

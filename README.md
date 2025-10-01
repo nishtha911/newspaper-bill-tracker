@@ -54,7 +54,7 @@ Follow these steps to set up the project locally.
 4. Start the server:
 
    ```bash
-   npm start
+   node server.js
    ```
 
 ### Frontend Setup
@@ -70,7 +70,7 @@ Follow these steps to set up the project locally.
    ```bash
    npm run dev
    ```
-4. Open your browser and go to: [http://localhost:3000](http://localhost:3000)
+4. Open your browser and go to: [http://localhost:5173](http://localhost:5173)
 
 ---
 
